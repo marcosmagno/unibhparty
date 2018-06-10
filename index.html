@@ -34,6 +34,7 @@
         ['Belo Horizonte/Rua Oliver', -19.8824849,-43.9243927, 2],
       ];    
 
+
       
 function loadJSON(callback) {
 
@@ -54,13 +55,14 @@ function getMarkersFromAPI() {
   loadJSON(function(response) {
     // Parse JSON string into object
     var actual_JSON = JSON.parse(response);
-    updateMarkers(actual_JSON.mylocations)
+    updateMarkers(actual_JSON)
 
   });
 }
 
 
 function updateMarkers(newmarkers) {
+  console.log(newmarkers)
   mymarkers.forEach(marker => {
   marker.setMap(null);
 })
@@ -92,6 +94,11 @@ function updateMarkers(newmarkers) {
         setInterval( function() {
         getMarkersFromAPI();          
       }, 2000 );
+
+
+ 
+
+
 }
 
       // Loop through the results array and place a marker for each
