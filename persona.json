@@ -1,0 +1,44 @@
+{
+  "mylocations": [
+    {
+      "logadour":"Ru algumas",
+      "lat": -19.503148,
+      "lng": -43.40178,
+      "ID": "att1234560",
+      "type": "AT&T",
+      "activated": "2015-11-20",
+      "added": "2015-11-21",
+      "completed": false
+    }, 
+    {
+      "logadour":"Ru algumas",
+      "lat": -19.203148,
+      "lng": -43.30178,
+      "ID": "att1234560",
+      "type": "AT&T",
+      "activated": "2015-11-20",
+      "added": "2015-11-21",
+      "completed": false
+    },
+          {
+      "logadour":"Ru algumas",
+      "lat": -19.253148,
+      "lng": -43.35178,
+      "ID": "att1234560",
+      "type": "AT&T",
+      "activated": "2015-11-20",
+      "added": "2015-11-21",
+      "completed": false
+    },  
+{
+      "logadour":"Ru algumas",
+      "lat": -19.263148,
+      "lng": -43.36178,
+      "ID": "att1234560",
+      "type": "AT&T",
+      "activated": "2015-11-20",
+      "added": "2015-11-21",
+      "completed": false
+    }  
+  ]
+}
