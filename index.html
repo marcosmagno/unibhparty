@@ -19,69 +19,85 @@
     <div id="map"></div>
     <script>
       var map;
+      var mymarkers = [];
+        var mylocations = [
+            { lat: -19.8680725, lng: -43.9357416 },
+            { lat: -19.8851259, lng: -43.9497207 },
+            { lat: -19.8712859, lng: -43.9372677 },
+            { lat: -19.8824849, lng: -43.9243927 },
+        ];
+      
+      var locations = [
+        ['Belo Horizonte/A', -19.8680725,-43.9357416, 7],
+        ['Belo Horizonte/B', -19.8851259,-43.9497207, 5],
+        ['Belo Horizonte/C', -19.8712859,-43.9372677, 3],
+        ['Belo Horizonte/Rua Oliver', -19.8824849,-43.9243927, 2],
+      ];    
+
+      
+function loadJSON(callback) {
+
+  var xobj = new XMLHttpRequest();
+  xobj.overrideMimeType("application/json");
+  xobj.open('GET', 'persona.json', true); // Replace 'my_data' with the path to your file
+  xobj.onreadystatechange = function () {
+    if (xobj.readyState == 4 && xobj.status == "200") {
+    // Required use of an anonymous callback as .open will NOT return a value but simply returns undefined in asynchronous mode
+    callback(xobj.responseText);
+    }
+  };
+  xobj.send(null);
+}
+
+function getMarkersFromAPI() {
+
+  loadJSON(function(response) {
+    // Parse JSON string into object
+    var actual_JSON = JSON.parse(response);
+    updateMarkers(actual_JSON.mylocations)
+
+  });
+}
+
+
+function updateMarkers(newmarkers) {
+  mymarkers.forEach(marker => {
+  marker.setMap(null);
+})
+  mymarkers = [];
+
+  // populate the map with the new markerks
+  mymarkers = newmarkers.map(newmarker => {
+
+  return new google.maps.Marker({
+  position: { lat: newmarker.lat, lng: newmarker.lng },
+  //icon: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png',
+  map: map
+  });
+});
+
+
+
+}
+
       function initMap() {
         map = new google.maps.Map(document.getElementById('map'), {
-          zoom: 2,
+          zoom: 12,
           center: new google.maps.LatLng(-19.8667489,-43.9218067),
-          mapTypeId: 'terrain'
+          
+
         });
 
-        
-
-        // Create a <script> tag and set the USGS URL as the source.
-        var script = document.createElement('script');
-        // This example uses a local copy of the GeoJSON stored at
-        // http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_week.geojsonp
-        script.src = 'https://developers.google.com/maps/documentation/javascript/examples/json/earthquake_GeoJSONP.js';
-        document.getElementsByTagName('head')[0].appendChild(script);
-      }
+        updateMarkers(mylocations)
+        setInterval( function() {
+        getMarkersFromAPI();          
+      }, 2000 );
+}
 
       // Loop through the results array and place a marker for each
       // set of coordinates.
-      window.eqfeed_callback = function(results) {
-    var locations = [
-      ['Belo Horizonte/A', -19.8680725,-43.9357416, 7],
-      ['Belo Horizonte/B', -19.8851259,-43.9497207, 5],
-      ['Belo Horizonte/C', -19.8712859,-43.9372677, 3],
-      ['Belo Horizonte/Rua Oliver', -19.8824849,-43.9243927, 2],
-    ];
-
-    var map = new google.maps.Map(document.getElementById('map'), {
-      zoom: 12,
-      center: new google.maps.LatLng(-19.8680725,-43.9357416),
-      mapTypeId: google.maps.MapTypeId.ROADMAP
-    });
-
-    var infowindow = new google.maps.InfoWindow();
-
-    var marker, i;
-
-    for (i = 0; i < locations.length; i++) {  
-      marker = new google.maps.Marker({
-        position: new google.maps.LatLng(locations[i][1], locations[i][2]),
-        map: map
-      });
-
-      google.maps.event.addListener(marker, 'click', (function(marker, i) {
-        return function() {
-          infowindow.setContent(locations[i][0]);
-          infowindow.open(map, marker);
-        }
-      })(marker, i));
-    }
-      }
 
 
-      //window.eqfeed_callback = function(results) {
-      //  for (var i = 0; i < results.features.length; i++) {
-      //    var coords = results.features[i].geometry.coordinates;
-      //    var latLng = new google.maps.LatLng(coords[1],coords[0]);
-      //    var marker = new google.maps.Marker({
-      //      position: latLng,
-      //      map: map
-      //    });
-      //  }
-      //}
 
     </script>
     <script async defer
